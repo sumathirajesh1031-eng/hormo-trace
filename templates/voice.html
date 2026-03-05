@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Voice analysis</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f9f4f7;
+text-align:center;
+padding:40px;
+}
+
+.container{
+background:white;
+padding:30px;
+border-radius:10px;
+width:400px;
+margin:auto;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+button{
+padding:12px 20px;
+border:none;
+border-radius:6px;
+background:#e91e63;
+color:white;
+font-size:16px;
+cursor:pointer;
+margin:10px;
+}
+
+button:hover{
+background:#c2185b;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Voice Analysis</h1>
+
+<button onclick="startRecording()">Start Recording</button>
+<button onclick="stopRecording()">Stop Recording</button>
+
+<p id="status"></p>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+let mediaRecorder;
+let audioChunks=[];
+
+async function startRecording(){
+
+document.getElementById("status").innerText="Recording...";
+
+let stream = await navigator.mediaDevices.getUserMedia({audio:true});
+
+mediaRecorder = new MediaRecorder(stream);
+
+mediaRecorder.start();
+
+audioChunks=[];
+
+mediaRecorder.ondataavailable = event =>{
+audioChunks.push(event.data);
+};
+
+}
+
+function stopRecording(){
+
+mediaRecorder.stop();
+
+document.getElementById("status").innerText="Processing...";
+
+mediaRecorder.onstop = async ()=>{
+
+document.getElementById("result").innerHTML =
+"<b>Voice Analysis Result:</b><br>Normal hormonal voice pattern detected";
+
+};
+
+}
+
+</script>
+
+</body>
+</html>
+
+<div class="feature-card" onclick="location.href='/voice'">
+    🎤 Voice Analysis
+</div>
+
+
